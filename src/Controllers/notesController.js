@@ -52,13 +52,40 @@ class NotesController {
     return response.json()
   }
   async index(request, response){
-    const {user_id, title} = request.query;
-    const notes =  await knex("MovieNotes") 
+    const {user_id, title, tags} = request.query;
+    let notes
+
+    if(tags){
+      //pesquisar por virgula, usamos o map apenas para rodar as tags
+     const filterTags = tags.split(',').map(tag => tag.trim())
+     notes = await knex("tags")
+     .select([
+      "MovieNotes.id",
+      "MovieNotes.title",
+      "MovieNotes.user_id"
+     ])
+     .where("MovieNotes.user_id" , user_id)
+     .whereLike("MovieNotes.title" , `%${title}%`)
+     //pesquisar para ver a nota atravez da comparacao do array
+     .whereIn("name", filterTags)
+     .innerJoin("MovieNotes", "MovieNotes.id" , "tags.note_id")
+    }
+    else{    
+    notes =  await knex("MovieNotes") 
     .where({user_id}) //filtrar por usuario
     .whereLike("title", `%${title}%`) // pesquisar pelo nome, % antes e depois para
     .orderBy("title") //ordem por titulo
-    
-    return response.json({notes})
+    }
+    const userTags = await knex("tags").where({user_id})
+    const notesWithTags =   notes.map(note => {
+      const noteTags = userTags.filter(tag => tag.note_id === note.id)
+
+      return {
+        ...note,
+        tags: noteTags
+      }
+    })
+    return response.json(notesWithTags)
   }
 }
 
