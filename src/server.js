@@ -2,14 +2,17 @@ require("express-async-errors")
 const AppError = require("./utils/AppError")
 const express = require("express")
 const routes = require("./routes")
+const uploadConfig = require("./configs/upload")
 //instalamos o knex, para ser o nosso query builder usando npm install kex
 //para abrimos a configuracao dele usamos npx knex init
 
 const migrationsRun = require("./database/sqlite/migrations")
 const app = express();
 app.use(express.json())
+app.use("/files" , express.static(uploadConfig.UPLOADS_FOLDER))
 app.use(routes)
-migrationsRun() // fazer a criacao da database automatica
+migrationsRun() 
+// fazer a criacao da database automatica
 
 app.use((error, request, response, next) => {
  //verificar se foi erro por parte do cliente
