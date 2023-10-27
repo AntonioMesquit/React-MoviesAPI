@@ -55,7 +55,7 @@ async update(request,response){
     if(password && old_password){
         const checkOldPassword = await compare(old_password, user.password)
         if(!checkOldPassword){
-            throw new AppError("Senha antiga atual invalida!")
+            throw new AppError("Senha antiga invalida!")
         }
         user.password = await hash(password, 8)
     }
