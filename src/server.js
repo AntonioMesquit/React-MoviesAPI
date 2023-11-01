@@ -1,3 +1,5 @@
+
+require("dotenv/config")
 require("express-async-errors")
 //instalar o cors ,para o front end conseguir fazer requisicoes para o back, npm install cors
 const cors = require('cors')
@@ -39,7 +41,7 @@ return response.status(500).json({
 
 
 });
-const PORT = 3333
+const PORT = process.env.SERVER_PORT || 3000
 
 app.listen(PORT, () => console.log(`Estamos rodando na porta ${PORT}`));
 
