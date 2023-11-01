@@ -3,7 +3,7 @@ const multer = require('multer')
 const uploadConfig = require('../configs/upload')
 //
 const UsersController = require("../Controllers/usersController")
-const UserAvatarController = require("../Controllers/userAvatarController")
+const UserAvatarController = require("../Controllers/UserAvatarController")
 const ensureAuthenticated = require('../middlewares/ensureAuthenticated')
 const usersRoutes = Router();
 const upload = multer(uploadConfig.MULTER)
