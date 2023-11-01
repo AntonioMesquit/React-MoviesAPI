@@ -41,7 +41,7 @@ return response.status(500).json({
 
 
 });
-const PORT = process.env.SERVER_PORT || 3000
+const PORT = process.env.SERVER_PORT || 3333
 
 app.listen(PORT, () => console.log(`Estamos rodando na porta ${PORT}`));
 
